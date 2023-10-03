@@ -62,7 +62,7 @@ def main():
     vx, vy = 5, 5 
 
     # 爆弾の速度増加率
-    acceleration = 1.001
+    acc = 1.001
 
     clock = pg.time.Clock()
     tmr = 0
@@ -72,8 +72,8 @@ def main():
             if event.type == pg.QUIT: 
                 return
         # 時間経過に応じて速度を増加
-        vx *= acceleration
-        vy *= acceleration
+        vx *= acc
+        vy *= acc
 
         # 爆弾の位置を速度に応じて移動
         bomb_rect.move_ip(vx, vy)
@@ -100,8 +100,8 @@ def main():
         if length != 0:
             dx /= length
             dy /= length
-        vx += dx * acceleration
-        vy += dy * acceleration
+        vx += dx * acc
+        vy += dy * acc
 
         kk_rct.move_ip(move_amount[0],move_amount[1])
 
@@ -156,8 +156,8 @@ def main():
             screen.blit(bg_img, [0, 0])
             screen.blit(kk_img,kk_rct) 
             pg.display.update()
-            time.sleep(2)
             print("ゲームオーバー")
+            time.sleep(2)
             return  # こうかとんと爆弾が衝突したらreturn
 
 
@@ -166,7 +166,7 @@ def main():
 
         pg.display.update()
         tmr += 1
-        clock.tick(50)
+        clock.tick(20)
 
 if __name__ == "__main__":
     pg.init()
