@@ -93,11 +93,27 @@ def main():
                 move_amount[0] += mv[0] #　横方向合計移動量
                 move_amount[1] += mv[1] #　縦方向合計移動量
 
+         # 爆弾がこうかとんに向かって移動
+        dx = kk_rct.centerx - bomb_rect.centerx
+        dy = kk_rct.centery - bomb_rect.centery
+        length = math.sqrt(dx**2 + dy**2)
+        if length != 0:
+            dx /= length
+            dy /= length
+        vx += dx * acceleration
+        vy += dy * acceleration
 
         kk_rct.move_ip(move_amount[0],move_amount[1])
 
         if cheak_bound(kk_rct) != (True,True):
             kk_rct.move_ip(-move_amount[0],-move_amount[1])
+
+
+        kk_rct.move_ip(move_amount[0],move_amount[1])
+
+        if cheak_bound(kk_rct) != (True,True):
+            kk_rct.move_ip(-move_amount[0],-move_amount[1])
+
 
         #１．飛ぶ方向にしたがって画像切り替え
         #右
@@ -150,7 +166,7 @@ def main():
 
         pg.display.update()
         tmr += 1
-        clock.tick(100)
+        clock.tick(50)
 
 if __name__ == "__main__":
     pg.init()
