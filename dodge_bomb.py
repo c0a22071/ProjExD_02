@@ -57,6 +57,9 @@ def main():
     # 爆弾の速度を設定
     vx, vy = 5, 5 
 
+    # 爆弾の速度増加率
+    acceleration = 1.001
+
     clock = pg.time.Clock()
     tmr = 0
 
@@ -64,6 +67,9 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
+        # 時間経過に応じて速度を増加
+        vx *= acceleration
+        vy *= acceleration
 
         # 爆弾の位置を速度に応じて移動
         bomb_rect.move_ip(vx, vy)
