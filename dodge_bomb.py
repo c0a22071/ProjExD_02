@@ -12,6 +12,19 @@ dalta = {
     pg.K_RIGHT: (5, 0)   # 右矢印キー：右に5ピクセル移動
 }
 
+def cheak_bound(obj_rct: pg.Rect):
+    """
+    引数：こうかとんRectかばくだんRect
+    戻り値：タプル（横方向判定結果，縦方向判定結果）
+    画面内ならTrue，画面外ならFalse
+    """
+    yoko, tate = True, True
+    if obj_rct.left < 0 or WIDTH < obj_rct.right:
+        yoko = False
+    if obj_rct.top < 0 or HEIGHT < obj_rct.bottom:
+        tate = False
+    return yoko, tate
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -43,10 +56,6 @@ def main():
         # 爆弾の位置を速度に応じて移動
         bomb_rect.move_ip(vx, vy)
 
-        # 画面外に出た場合、ランダムな位置に再配置
-        if not screen.get_rect().colliderect(bomb_rect):
-            bomb_rect.x = random.randint(0, WIDTH - bomb_rect.width)
-            bomb_rect.y = random.randint(0, HEIGHT - bomb_rect.height)
 
 
         screen.blit(bg_img, [0, 0])
