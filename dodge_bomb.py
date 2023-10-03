@@ -61,9 +61,6 @@ def main():
         if not tate :
             vy *= -1
 
-
-
-
         screen.blit(bg_img, [0, 0])
 
         # キーイベントを処理してこうかとんを移動
@@ -83,6 +80,12 @@ def main():
         # こうかとんの位置を更新
         kk_img_rect = kk_img.get_rect(center=(900, 400))
         kk_img_rect.move_ip(move_amount[0], move_amount[1])
+
+        # 衝突判定
+        if kk_rct.colliderect(bomb_rect):
+            print("ゲームオーバー")
+            return  # こうかとんと爆弾が衝突したらreturn
+
 
          # 爆弾を画面に描画
         screen.blit(bomb_surface, bomb_rect.topleft)
