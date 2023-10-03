@@ -2,6 +2,7 @@ import sys
 import pygame as pg
 import random
 import math
+import time
 
 WIDTH, HEIGHT = 1600, 900
 
@@ -43,6 +44,9 @@ def main():
     kk_img_dole = pg.transform.rotate(kk_img,45)
     kk_img_upri = pg.transform.rotate(kk_img_right,45)
     kk_img_uple = pg.transform.rotate(kk_img,-45)
+
+    kk_img_gg1 = pg.image.load("ex02/fig/8.png")
+    kk_img_gg = pg.transform.rotozoom(kk_img_gg1, 0, 2.0)
 
 
     # 爆弾のSurfaceを作成
@@ -132,6 +136,11 @@ def main():
 
         # 衝突判定
         if kk_rct.colliderect(bomb_rect):
+            kk_img = kk_img_gg
+            screen.blit(bg_img, [0, 0])
+            screen.blit(kk_img,kk_rct) 
+            pg.display.update()
+            time.sleep(2)
             print("ゲームオーバー")
             return  # こうかとんと爆弾が衝突したらreturn
 
