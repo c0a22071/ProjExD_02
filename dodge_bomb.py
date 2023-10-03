@@ -55,6 +55,12 @@ def main():
 
         # 爆弾の位置を速度に応じて移動
         bomb_rect.move_ip(vx, vy)
+        yoko,tate = cheak_bound(bomb_rect)
+        if not yoko :
+            vx *= -1
+        if not tate :
+            vy *= -1
+
 
 
 
@@ -68,6 +74,10 @@ def main():
                 move_amount[0] += mv[0] #　横方向合計移動量
                 move_amount[1] += mv[1] #　縦方向合計移動量
         kk_rct.move_ip(move_amount[0],move_amount[1])
+
+        if cheak_bound(kk_rct) != (True,True):
+            kk_rct.move_ip(-move_amount[0],-move_amount[1])
+
         screen.blit(kk_img,kk_rct) 
 
         # こうかとんの位置を更新
@@ -79,7 +89,7 @@ def main():
 
         pg.display.update()
         tmr += 1
-        clock.tick(50)
+        clock.tick(1000)
 
 
 if __name__ == "__main__":
