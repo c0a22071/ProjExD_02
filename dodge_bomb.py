@@ -1,6 +1,7 @@
 import sys
 import pygame as pg
 import random
+import math
 
 WIDTH, HEIGHT = 1600, 900
 
@@ -34,6 +35,16 @@ def main():
     kk_rct = kk_img.get_rect()
     kk_rct.center = (900,400) # 初期座標
 
+    kk_img_right = pg.transform.flip(kk_img, True, False)
+    kk_img_left = pg.transform.rotozoom(kk_img, 0, 1.0)
+    kk_img_up = pg.transform.rotate(kk_img,270)
+    kk_img_down = pg.transform.rotate(kk_img,90)
+    kk_img_dori = pg.transform.rotate(kk_img_right,-45)
+    kk_img_dole = pg.transform.rotate(kk_img,45)
+    kk_img_upri = pg.transform.rotate(kk_img_right,45)
+    kk_img_uple = pg.transform.rotate(kk_img,-45)
+
+
     # 爆弾のSurfaceを作成
     bomb_surface = pg.Surface((20, 20), pg.SRCALPHA)
     pg.draw.circle(bomb_surface, (255, 0, 0), (10, 10), 10)
@@ -44,10 +55,11 @@ def main():
     bomb_rect.y = random.randint(0, HEIGHT - bomb_rect.height)
 
     # 爆弾の速度を設定
-    vx, vy = 5, 5
+    vx, vy = 5, 5 
 
     clock = pg.time.Clock()
     tmr = 0
+
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
@@ -70,16 +82,47 @@ def main():
             if keys[key]:
                 move_amount[0] += mv[0] #　横方向合計移動量
                 move_amount[1] += mv[1] #　縦方向合計移動量
+
+
         kk_rct.move_ip(move_amount[0],move_amount[1])
 
         if cheak_bound(kk_rct) != (True,True):
             kk_rct.move_ip(-move_amount[0],-move_amount[1])
 
+        #１．飛ぶ方向にしたがって画像切り替え
+        #右
+        if keys[pg.K_RIGHT]:
+            kk_img = kk_img_right
+        #上
+        if keys[pg.K_UP]:
+            kk_img = kk_img_up
+        #下
+        if keys[pg.K_DOWN]:
+            kk_img = kk_img_down
+        #左
+        if keys[pg.K_LEFT]:
+            kk_img = kk_img_left
+        #右下
+        if keys[pg.K_DOWN] and keys[pg.K_RIGHT]:
+            kk_img = kk_img_dori
+        #左下
+        if keys[pg.K_DOWN] and keys[pg.K_LEFT]:
+            kk_img = kk_img_dole
+        #右上
+        if keys[pg.K_UP] and keys[pg.K_RIGHT]:
+            kk_img = kk_img_upri
+        #左上
+        if keys[pg.K_UP] and keys[pg.K_LEFT]:
+            kk_img = kk_img_uple
+
+           
         screen.blit(kk_img,kk_rct) 
 
         # こうかとんの位置を更新
         kk_img_rect = kk_img.get_rect(center=(900, 400))
         kk_img_rect.move_ip(move_amount[0], move_amount[1])
+
+
 
         # 衝突判定
         if kk_rct.colliderect(bomb_rect):
@@ -92,8 +135,7 @@ def main():
 
         pg.display.update()
         tmr += 1
-        clock.tick(1000)
-
+        clock.tick(100)
 
 if __name__ == "__main__":
     pg.init()
